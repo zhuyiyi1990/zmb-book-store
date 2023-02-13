@@ -12,8 +12,8 @@ import java.math.BigDecimal;
  * @author 朱一一
  */
 @Data
-@TableName("book")
-public class Book implements Serializable {
+@TableName("user_borrow_list")
+public class UserBorrowSummary implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,23 +24,18 @@ public class Book implements Serializable {
     private Integer id;
 
     /**
-     * 书名
+     * 用户id
      */
-    private String name;
+    private Integer userId;
 
     /**
-     * 作者
+     * 总借阅金额
      */
-    private String author;
+    private BigDecimal totalAmount;
 
     /**
-     * 价格
+     * 0-正常，1-所有书已还
      */
-    private BigDecimal price;
-
-    /**
-     * 类型
-     */
-    private String type;
+    private Integer status;
 
 }

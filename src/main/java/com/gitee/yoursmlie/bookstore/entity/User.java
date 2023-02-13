@@ -1,19 +1,21 @@
 package com.gitee.yoursmlie.bookstore.entity;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 /**
  * @author 朱一一
  */
 @Data
-@TableName("book")
-public class Book implements Serializable {
+@TableName("user")
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,23 +26,24 @@ public class Book implements Serializable {
     private Integer id;
 
     /**
-     * 书名
+     * 真实姓名
      */
     private String name;
 
     /**
-     * 作者
+     * 性别（1：男 2：女）
      */
-    private String author;
+    private Integer sex;
 
     /**
-     * 价格
+     * 电话
      */
-    private BigDecimal price;
+    private String phone;
 
     /**
-     * 类型
+     * 删除状态（0，正常，1已删除）
      */
-    private String type;
+    @TableLogic
+    private Integer delFlag;
 
 }

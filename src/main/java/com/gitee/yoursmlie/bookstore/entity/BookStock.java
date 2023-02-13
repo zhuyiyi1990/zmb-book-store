@@ -6,14 +6,13 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * @author 朱一一
  */
 @Data
-@TableName("book")
-public class Book implements Serializable {
+@TableName("book_stock")
+public class BookStock implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,23 +23,18 @@ public class Book implements Serializable {
     private Integer id;
 
     /**
-     * 书名
+     * 书本id
      */
-    private String name;
+    private Integer bookId;
 
     /**
-     * 作者
+     * 书本总数
      */
-    private String author;
+    private Integer total;
 
     /**
-     * 价格
+     * 已外借数量
      */
-    private BigDecimal price;
-
-    /**
-     * 类型
-     */
-    private String type;
+    private Integer borrowedNum;
 
 }
