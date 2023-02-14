@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gitee.yoursmlie.bookstore.common.api.vo.Result;
-import com.gitee.yoursmlie.bookstore.entity.Book;
-import com.gitee.yoursmlie.bookstore.service.IBookService;
+import com.gitee.yoursmlie.bookstore.entity.BookStock;
+import com.gitee.yoursmlie.bookstore.service.IBookStockService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
  * @author 朱一一
  */
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/bookStock")
 @Slf4j
-public class BookController {
+public class BookStockController {
 
     @Autowired
-    private IBookService bookService;
+    private IBookStockService bookStockService;
 
     /**
      * 分页列表查询
@@ -29,35 +29,35 @@ public class BookController {
      * @return
      */
     @GetMapping(value = "/list")
-    public Result<IPage<Book>> queryPageList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        QueryWrapper<Book> queryWrapper = new QueryWrapper<>();
-        Page<Book> page = new Page<>(pageNo, pageSize);
-        IPage<Book> pageList = bookService.page(page, queryWrapper);
+    public Result<IPage<BookStock>> queryPageList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        QueryWrapper<BookStock> queryWrapper = new QueryWrapper<>();
+        Page<BookStock> page = new Page<>(pageNo, pageSize);
+        IPage<BookStock> pageList = bookStockService.page(page, queryWrapper);
         return Result.OK(pageList);
     }
 
     /**
      * 添加
      *
-     * @param book
+     * @param bookStock
      * @return
      */
     @PostMapping(value = "/add")
-    public Result<String> add(@RequestBody Book book) {
-        bookService.save(book);
+    public Result<String> add(@RequestBody BookStock bookStock) {
+        bookStockService.save(bookStock);
         return Result.OK("添加成功！");
     }
 
     /**
      * 编辑
      *
-     * @param book
+     * @param bookStock
      * @return
      */
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<String> edit(@RequestBody Book book) {
-        bookService.updateById(book);
+    public Result<String> edit(@RequestBody BookStock bookStock) {
+        bookStockService.updateById(bookStock);
         return Result.OK("编辑成功!");
     }
 
@@ -69,7 +69,7 @@ public class BookController {
      */
     @DeleteMapping(value = "/delete")
     public Result<String> delete(@RequestParam(name = "id", required = true) String id) {
-        bookService.removeById(id);
+        bookStockService.removeById(id);
         return Result.OK("删除成功!");
     }
 
@@ -80,12 +80,12 @@ public class BookController {
      * @return
      */
     @GetMapping(value = "/queryById")
-    public Result<Book> queryById(@RequestParam(name = "id") String id) {
-        Book book = bookService.getById(id);
-        if (book == null) {
+    public Result<BookStock> queryById(@RequestParam(name = "id") String id) {
+        BookStock bookStock = bookStockService.getById(id);
+        if (bookStock == null) {
             return Result.error("未找到对应数据", null);
         }
-        return Result.OK(book);
+        return Result.OK(bookStock);
     }
 
 }
