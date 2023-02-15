@@ -44,9 +44,10 @@ public class BookController {
      * @return
      */
     @PostMapping(value = "/add")
-    public Result<String> add(@RequestBody Book book) {
+    public Result<?> add(@RequestBody Book book) {
+        Result<?> result = new Result<>();
         bookService.save(book);
-        return Result.OK("添加成功！");
+        return result.success("添加成功！");
     }
 
     /**
@@ -56,9 +57,10 @@ public class BookController {
      * @return
      */
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<String> edit(@RequestBody Book book) {
+    public Result<?> edit(@RequestBody Book book) {
+        Result<?> result = new Result<>();
         bookService.updateById(book);
-        return Result.OK("编辑成功!");
+        return result.success("编辑成功!");
     }
 
     /**
@@ -68,9 +70,10 @@ public class BookController {
      * @return
      */
     @DeleteMapping(value = "/delete")
-    public Result<String> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+        Result<?> result = new Result<>();
         bookService.removeById(id);
-        return Result.OK("删除成功!");
+        return result.success("删除成功!");
     }
 
     /**
@@ -81,6 +84,7 @@ public class BookController {
      */
     @GetMapping(value = "/queryById")
     public Result<Book> queryById(@RequestParam(name = "id") String id) {
+        Result<Book> result = new Result<>();
         Book book = bookService.getById(id);
         if (book == null) {
             return Result.error("未找到对应数据", null);

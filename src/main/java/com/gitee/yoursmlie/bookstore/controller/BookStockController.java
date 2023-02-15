@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gitee.yoursmlie.bookstore.common.api.vo.Result;
 import com.gitee.yoursmlie.bookstore.entity.BookStock;
 import com.gitee.yoursmlie.bookstore.service.IBookStockService;
+import com.gitee.yoursmlie.bookstore.vo.StockChangeVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,21 +45,24 @@ public class BookStockController {
      * @return
      */
     @PostMapping(value = "/add")
-    public Result<String> add(@RequestBody BookStock bookStock) {
+    public Result<?> add(@RequestBody BookStock bookStock) {
+        Result<?> result = new Result<>();
+        bookStock.setBorrowedNum(0);
         bookStockService.save(bookStock);
-        return Result.OK("添加成功！");
+        return result.success("添加成功！");
     }
 
     /**
-     * 编辑
+     * 增加/减少库存
      *
-     * @param bookStock
+     * @param vo
      * @return
      */
-    @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<String> edit(@RequestBody BookStock bookStock) {
-        bookStockService.updateById(bookStock);
-        return Result.OK("编辑成功!");
+    @RequestMapping(value = "/changeStock", method = {RequestMethod.PUT, RequestMethod.POST})
+    public Result<?> edit(@RequestBody StockChangeVO vo) {
+        Result<?> result = new Result<>();
+        bookStockService.changeStock(vo.getBookId(), vo.getIncrement());
+        return result.success("库存修改成功!");
     }
 
     /**
@@ -68,9 +72,14 @@ public class BookStockController {
      * @return
      */
     @DeleteMapping(value = "/delete")
-    public Result<String> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+        Result<?> result = new Result<>();
+        BookStock bookStock = bookStockService.getById(id);
+        if (bookStock.getBorrowedNum() > 0) {
+            return result.error500("已有外借，不能删除");
+        }
         bookStockService.removeById(id);
-        return Result.OK("删除成功!");
+        return result.success("删除成功!");
     }
 
     /**
