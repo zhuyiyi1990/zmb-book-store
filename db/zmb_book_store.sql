@@ -11,7 +11,7 @@
  Target Server Version : 50740
  File Encoding         : 65001
 
- Date: 14/02/2023 16:56:53
+ Date: 16/02/2023 17:00:30
 */
 
 SET NAMES utf8mb4;
@@ -25,10 +25,17 @@ CREATE TABLE `book`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '书名',
   `author` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作者',
-  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '价格',
+  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '借阅单价',
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of book
+-- ----------------------------
+INSERT INTO `book` VALUES (1, '哈利波特', 'JK', 12.34, '魔幻');
+INSERT INTO `book` VALUES (2, '三国演义', '罗贯中', 100.00, '小说');
+INSERT INTO `book` VALUES (3, '罗贯中', '吴承恩', 100.01, '小说');
 
 -- ----------------------------
 -- Table structure for book_stock
@@ -40,7 +47,13 @@ CREATE TABLE `book_stock`  (
   `total` int(11) NULL DEFAULT NULL COMMENT '书本总数',
   `borrowed_num` int(11) NULL DEFAULT NULL COMMENT '已外借数量',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of book_stock
+-- ----------------------------
+INSERT INTO `book_stock` VALUES (1, 1, 100, 0);
+INSERT INTO `book_stock` VALUES (2, 2, 200, 0);
 
 -- ----------------------------
 -- Table structure for user
@@ -55,7 +68,13 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uniq_sys_user_phone`(`phone`) USING BTREE,
   INDEX `idx_su_del_flag`(`del_flag`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES (1, '朱一一', 1, '15021042401', 0);
+INSERT INTO `user` VALUES (2, '周茂兵', 1, NULL, 0);
 
 -- ----------------------------
 -- Table structure for user_borrow_detail

@@ -34,7 +34,7 @@ public class Book implements Serializable {
     private String author;
 
     /**
-     * 价格
+     * 借阅单价
      */
     private BigDecimal price;
 
