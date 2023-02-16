@@ -47,8 +47,11 @@ public class BookStockController {
     @PostMapping(value = "/add")
     public Result<?> add(@RequestBody BookStock bookStock) {
         Result<?> result = new Result<>();
-        bookStock.setBorrowedNum(0);
-        bookStockService.save(bookStock);
+        try {
+            bookStockService.save(bookStock);
+        } catch (Exception e) {
+            return result.error500("添加失败：" + e.getMessage());
+        }
         return result.success("添加成功！");
     }
 
@@ -59,9 +62,13 @@ public class BookStockController {
      * @return
      */
     @RequestMapping(value = "/changeStock", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<?> edit(@RequestBody StockChangeVO vo) {
+    public Result<?> changeStock(@RequestBody StockChangeVO vo) {
         Result<?> result = new Result<>();
-        bookStockService.changeStock(vo.getBookId(), vo.getIncrement());
+        try {
+            bookStockService.changeStock(vo.getBookId(), vo.getIncrement());
+        } catch (Exception e) {
+            return result.error500("库存修改失败：" + e.getMessage());
+        }
         return result.success("库存修改成功!");
     }
 
@@ -74,11 +81,11 @@ public class BookStockController {
     @DeleteMapping(value = "/delete")
     public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
         Result<?> result = new Result<>();
-        BookStock bookStock = bookStockService.getById(id);
-        if (bookStock.getBorrowedNum() > 0) {
-            return result.error500("已有外借，不能删除");
+        try {
+            bookStockService.removeById(id);
+        } catch (Exception e) {
+            return result.error500("删除失败：" + e.getMessage());
         }
-        bookStockService.removeById(id);
         return result.success("删除成功!");
     }
 
