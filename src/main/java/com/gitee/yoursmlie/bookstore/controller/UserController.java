@@ -84,9 +84,7 @@ public class UserController {
     @DeleteMapping(value = "/delete")
     public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
         Result<?> result = new Result<>();
-        User user = userService.getById(id);
-        user.setDelFlag(1);
-        userService.updateById(user);
+        userService.removeById(id);
         return result.success("删除成功!");
     }
 
