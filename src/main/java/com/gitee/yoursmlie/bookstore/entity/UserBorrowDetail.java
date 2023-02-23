@@ -30,11 +30,6 @@ public class UserBorrowDetail {
     private Integer num;
 
     /**
-     * 0-正常，1-所有书已还
-     */
-    private Integer status;
-
-    /**
      * 已还数量
      */
     private Integer returnedNum;

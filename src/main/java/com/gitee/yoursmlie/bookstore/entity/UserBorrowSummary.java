@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * @author 朱一一
@@ -27,11 +26,6 @@ public class UserBorrowSummary implements Serializable {
      * 用户id
      */
     private Integer userId;
-
-    /**
-     * 总借阅金额
-     */
-    private BigDecimal totalAmount;
 
     /**
      * 0-正常，1-所有书已还

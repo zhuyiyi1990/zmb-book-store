@@ -11,7 +11,7 @@
  Target Server Version : 50740
  File Encoding         : 65001
 
- Date: 16/02/2023 17:00:30
+ Date: 23/02/2023 15:48:31
 */
 
 SET NAMES utf8mb4;
@@ -28,7 +28,7 @@ CREATE TABLE `book`  (
   `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '借阅单价',
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of book
@@ -47,7 +47,7 @@ CREATE TABLE `book_stock`  (
   `total` int(11) NULL DEFAULT NULL COMMENT '书本总数',
   `borrowed_num` int(11) NULL DEFAULT NULL COMMENT '已外借数量',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of book_stock
@@ -68,13 +68,14 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uniq_sys_user_phone`(`phone`) USING BTREE,
   INDEX `idx_su_del_flag`(`del_flag`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES (1, '朱一一', 1, '15021042401', 0);
 INSERT INTO `user` VALUES (2, '周茂兵', 1, NULL, 0);
+INSERT INTO `user` VALUES (3, '尤旭', 1, NULL, 0);
 
 -- ----------------------------
 -- Table structure for user_borrow_detail
@@ -85,9 +86,8 @@ CREATE TABLE `user_borrow_detail`  (
   `seq` int(11) NOT NULL COMMENT '序列号',
   `book_id` int(11) NULL DEFAULT NULL COMMENT '书本id',
   `num` int(11) NULL DEFAULT NULL COMMENT '所借数量',
-  `status` tinyint(1) NULL DEFAULT NULL COMMENT '0-正常，1-所有书已还',
   `returned_num` int(11) NULL DEFAULT NULL COMMENT '已还数量',
-  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '借阅时的单价',
+  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '借阅当时的单价',
   PRIMARY KEY (`borrow_id`, `seq`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -98,7 +98,6 @@ DROP TABLE IF EXISTS `user_borrow_summary`;
 CREATE TABLE `user_borrow_summary`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NULL DEFAULT NULL COMMENT '用户id',
-  `total_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '总借阅金额',
   `status` tinyint(1) NULL DEFAULT NULL COMMENT '0-正常，1-所有书已还',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
