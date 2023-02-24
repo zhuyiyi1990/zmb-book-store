@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class BorrowDetailVO {
 
     /**
-     * 书本id
+     * 图书id
      */
     private Integer bookId;
 

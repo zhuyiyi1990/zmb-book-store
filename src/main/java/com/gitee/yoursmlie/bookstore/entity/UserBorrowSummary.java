@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author 朱一一
  */
 @Data
-@TableName("user_borrow_list")
+@TableName("user_borrow_summary")
 public class UserBorrowSummary implements Serializable {
 
     private static final long serialVersionUID = 1L;

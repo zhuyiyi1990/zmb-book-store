@@ -17,4 +17,14 @@ public class Message {
 
     public static final String ERROR_00006 = "已有外借，不能删除";
 
+    public static final String ERROR_00007 = "未提供用户id";
+
+    public static final String ERROR_00008 = "用户id不存在";
+
+    public static final String ERROR_00009 = "未提供图书id";
+
+    public static final String ERROR_00010 = "借阅数量不合法";
+
+    public static final String ERROR_00011 = "库存不够";
+
 }

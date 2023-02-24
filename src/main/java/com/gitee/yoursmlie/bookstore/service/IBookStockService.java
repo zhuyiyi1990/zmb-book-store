@@ -6,7 +6,7 @@ import com.gitee.yoursmlie.bookstore.entity.BookStock;
 public interface IBookStockService extends IService<BookStock> {
 
     /**
-     * @param bookId    书本id
+     * @param bookId    图书id
      * @param increment 增量，可以为负
      */
     void changeStock(Integer bookId, Integer increment);

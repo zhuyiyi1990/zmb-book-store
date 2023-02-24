@@ -20,7 +20,7 @@ public class UserBorrowDetail {
     private Integer seq;
 
     /**
-     * 书本id
+     * 图书id
      */
     private Integer bookId;
 

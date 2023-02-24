@@ -23,12 +23,12 @@ public class BookStock implements Serializable {
     private Integer id;
 
     /**
-     * 书本id
+     * 图书id
      */
     private Integer bookId;
 
     /**
-     * 书本总数
+     * 图书总数
      */
     private Integer total;
 

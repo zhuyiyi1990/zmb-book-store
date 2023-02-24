@@ -39,7 +39,11 @@ public class BorrowController {
                 detailList.add(detail);
             }
         }
-        borrowService.borrow(summary, detailList);
+        try {
+            borrowService.borrow(summary, detailList);
+        } catch (Exception e) {
+            return result.error500("失败：" + e.getMessage());
+        }
         return result.success("借阅成功！");
     }
 
