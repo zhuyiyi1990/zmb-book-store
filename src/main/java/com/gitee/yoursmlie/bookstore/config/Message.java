@@ -29,4 +29,8 @@ public class Message {
 
     public static final String ERROR_00012 = "图书重复，请合并借书列表";
 
+    public static final String ERROR_00013 = "未提供借阅id";
+
+    public static final String ERROR_00014 = "借阅id无效";
+
 }

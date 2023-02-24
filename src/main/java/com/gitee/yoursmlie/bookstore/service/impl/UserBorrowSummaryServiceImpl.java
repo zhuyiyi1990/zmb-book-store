@@ -6,6 +6,7 @@ import com.gitee.yoursmlie.bookstore.config.Message;
 import com.gitee.yoursmlie.bookstore.entity.*;
 import com.gitee.yoursmlie.bookstore.mapper.*;
 import com.gitee.yoursmlie.bookstore.service.IUserBorrowSummaryService;
+import com.gitee.yoursmlie.bookstore.vo.ReturnDetailVO;
 import com.gitee.yoursmlie.bookstore.vo.ReturnVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,26 @@ public class UserBorrowSummaryServiceImpl extends ServiceImpl<UserBorrowSummaryM
     @Override
     public void returnBooks(ReturnVO vo) {
         //TODO
+        //检查是否提供id
+        if (Objects.isNull(vo.getId())) {
+            throw new RuntimeException(Message.ERROR_00013);
+        }
+
+        //检查借阅id是否有效
+        UserBorrowSummary summary = baseMapper.selectById(vo.getId());
+        if (Objects.isNull(summary) || !Objects.equals(summary.getStatus(), 0)) {
+            throw new RuntimeException(Message.ERROR_00014);
+        }
+
+        List<ReturnDetailVO> returnList = vo.getReturnList();
+        if (Objects.nonNull(returnList)) {
+            for (ReturnDetailVO detailVO : returnList) {
+                //检查是否传入图书id
+                if (Objects.isNull(detailVO.getBookId())) {
+                    throw new RuntimeException(Message.ERROR_00009);
+                }
+            }
+        }
     }
 
 }
