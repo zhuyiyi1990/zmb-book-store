@@ -6,6 +6,7 @@ import com.gitee.yoursmlie.bookstore.entity.UserBorrowSummary;
 import com.gitee.yoursmlie.bookstore.service.IUserBorrowSummaryService;
 import com.gitee.yoursmlie.bookstore.vo.BorrowDetailVO;
 import com.gitee.yoursmlie.bookstore.vo.BorrowVO;
+import com.gitee.yoursmlie.bookstore.vo.ReturnVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class BorrowController {
     private IUserBorrowSummaryService borrowService;
 
     @PostMapping(value = "/borrow")
-    public Result<?> borrow(@RequestBody BorrowVO vo) {
+    public Result<?> borrowBooks(@RequestBody BorrowVO vo) {
         Result<?> result = new Result<>();
         UserBorrowSummary summary = new UserBorrowSummary();
         BeanUtils.copyProperties(vo, summary);
@@ -40,11 +41,22 @@ public class BorrowController {
             }
         }
         try {
-            borrowService.borrow(summary, detailList);
+            borrowService.borrowBooks(summary, detailList);
         } catch (Exception e) {
             return result.error500("失败：" + e.getMessage());
         }
         return result.success("借阅成功！");
+    }
+
+    @PostMapping(value = "/return")
+    public Result<?> returnBooks(@RequestBody ReturnVO vo) {
+        Result<?> result = new Result<>();
+        try {
+            borrowService.returnBooks(vo);
+        } catch (Exception e) {
+            return result.error500("失败：" + e.getMessage());
+        }
+        return result.success("还书成功！");
     }
 
 }

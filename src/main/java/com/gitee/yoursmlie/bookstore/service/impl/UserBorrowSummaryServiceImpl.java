@@ -6,12 +6,15 @@ import com.gitee.yoursmlie.bookstore.config.Message;
 import com.gitee.yoursmlie.bookstore.entity.*;
 import com.gitee.yoursmlie.bookstore.mapper.*;
 import com.gitee.yoursmlie.bookstore.service.IUserBorrowSummaryService;
+import com.gitee.yoursmlie.bookstore.vo.ReturnVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author 朱一一
@@ -33,7 +36,7 @@ public class UserBorrowSummaryServiceImpl extends ServiceImpl<UserBorrowSummaryM
     private UserBorrowDetailMapper detailMapper;
 
     @Override
-    public void borrow(UserBorrowSummary summary, List<UserBorrowDetail> detailList) {
+    public void borrowBooks(UserBorrowSummary summary, List<UserBorrowDetail> detailList) {
         //检查是否传入用户id
         if (Objects.isNull(summary.getUserId())) {
             throw new RuntimeException(Message.ERROR_00007);
@@ -47,6 +50,8 @@ public class UserBorrowSummaryServiceImpl extends ServiceImpl<UserBorrowSummaryM
 
         summary.setStatus(0);
         baseMapper.insert(summary);
+
+        Set<Integer> bookIds = new HashSet<>();
         for (int i = 0; i < detailList.size(); i++) {
             UserBorrowDetail detail = detailList.get(i);
 
@@ -74,6 +79,12 @@ public class UserBorrowSummaryServiceImpl extends ServiceImpl<UserBorrowSummaryM
                 throw new RuntimeException("[" + detail.getBookId() + ":" + book.getName() + "]" + Message.ERROR_00011);
             }
 
+            //检查是否重复图书
+            if (bookIds.contains(detail.getBookId())) {
+                throw new RuntimeException(Message.ERROR_00012);
+            }
+            bookIds.add(detail.getBookId());
+
             detail.setBorrowId(summary.getId());
             detail.setSeq(i + 1);
             detail.setReturnedNum(0);
@@ -81,6 +92,11 @@ public class UserBorrowSummaryServiceImpl extends ServiceImpl<UserBorrowSummaryM
             bookStock.setBorrowedNum(bookStock.getBorrowedNum() + detail.getNum());
             bookStockMapper.updateById(bookStock);
         }
+    }
+
+    @Override
+    public void returnBooks(ReturnVO vo) {
+        //TODO
     }
 
 }

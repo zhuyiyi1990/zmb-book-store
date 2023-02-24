@@ -27,4 +27,6 @@ public class Message {
 
     public static final String ERROR_00011 = "库存不够";
 
+    public static final String ERROR_00012 = "图书重复，请合并借书列表";
+
 }
