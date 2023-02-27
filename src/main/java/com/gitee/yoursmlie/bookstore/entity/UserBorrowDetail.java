@@ -39,4 +39,9 @@ public class UserBorrowDetail {
      */
     private BigDecimal price;
 
+    /**
+     * 0-正常，1-所有书已还
+     */
+    private Integer status;
+
 }

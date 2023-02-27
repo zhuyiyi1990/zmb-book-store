@@ -89,6 +89,7 @@ public class UserBorrowSummaryServiceImpl extends ServiceImpl<UserBorrowSummaryM
             detail.setBorrowId(summary.getId());
             detail.setSeq(i + 1);
             detail.setReturnedNum(0);
+            detail.setStatus(0);
             detailMapper.insert(detail);
             bookStock.setBorrowedNum(bookStock.getBorrowedNum() + detail.getNum());
             bookStockMapper.updateById(bookStock);
@@ -97,7 +98,6 @@ public class UserBorrowSummaryServiceImpl extends ServiceImpl<UserBorrowSummaryM
 
     @Override
     public void returnBooks(ReturnVO vo) {
-        //TODO
         //检查是否提供id
         if (Objects.isNull(vo.getId())) {
             throw new RuntimeException(Message.ERROR_00013);
@@ -116,7 +116,38 @@ public class UserBorrowSummaryServiceImpl extends ServiceImpl<UserBorrowSummaryM
                 if (Objects.isNull(detailVO.getBookId())) {
                     throw new RuntimeException(Message.ERROR_00009);
                 }
+
+                LambdaQueryWrapper<UserBorrowDetail> detailWrapper = new LambdaQueryWrapper<>();
+                detailWrapper.eq(UserBorrowDetail::getBorrowId, vo.getId());
+                detailWrapper.eq(UserBorrowDetail::getBookId, detailVO.getBookId());
+                UserBorrowDetail detail = detailMapper.selectOne(detailWrapper);
+                if (Objects.isNull(detail)) {
+                    throw new RuntimeException(Message.ERROR_00015 + "[bookId:" + detailVO.getBookId() + "]");
+                }
+                if (detailVO.getNum() > (detail.getNum() - detail.getReturnedNum())) {
+                    throw new RuntimeException(Message.ERROR_00016 + "[bookId:" + detailVO.getBookId() + "]");
+                }
+                detail.setReturnedNum(detail.getReturnedNum() + detailVO.getNum());
+                if (Objects.equals(detail.getReturnedNum(), detail.getNum())) {
+                    detail.setStatus(1);
+                }
+                detailMapper.update(detail, detailWrapper);
+
+                //更新库存
+                LambdaQueryWrapper<BookStock> bookStockWrapper = new LambdaQueryWrapper<>();
+                bookStockWrapper.eq(BookStock::getBookId, detailVO.getBookId());
+                BookStock bookStock = bookStockMapper.selectOne(bookStockWrapper);
+                bookStock.setBorrowedNum(bookStock.getBorrowedNum() - detailVO.getNum());
+                bookStockMapper.updateById(bookStock);
             }
+        }
+
+        //如果已还所有图书，更新summary状态
+        LambdaQueryWrapper<UserBorrowDetail> detailWrapper = new LambdaQueryWrapper<>();
+        detailWrapper.eq(UserBorrowDetail::getStatus, 0);
+        if (detailMapper.selectCount(detailWrapper) == 0) {
+            summary.setStatus(1);
+            baseMapper.updateById(summary);
         }
     }
 

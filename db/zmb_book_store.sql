@@ -11,7 +11,7 @@
  Target Server Version : 50740
  File Encoding         : 65001
 
- Date: 24/02/2023 13:52:56
+ Date: 27/02/2023 09:59:28
 */
 
 SET NAMES utf8mb4;
@@ -52,9 +52,9 @@ CREATE TABLE `book_stock`  (
 -- ----------------------------
 -- Records of book_stock
 -- ----------------------------
-INSERT INTO `book_stock` VALUES (1, 1, 3, 1);
-INSERT INTO `book_stock` VALUES (2, 2, 5, 1);
-INSERT INTO `book_stock` VALUES (3, 3, 4, 1);
+INSERT INTO `book_stock` VALUES (1, 1, 3, 0);
+INSERT INTO `book_stock` VALUES (2, 2, 5, 0);
+INSERT INTO `book_stock` VALUES (3, 3, 4, 0);
 
 -- ----------------------------
 -- Table structure for user
@@ -89,15 +89,19 @@ CREATE TABLE `user_borrow_detail`  (
   `num` int(11) NULL DEFAULT NULL COMMENT '所借数量',
   `returned_num` int(11) NULL DEFAULT NULL COMMENT '已还数量',
   `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '借阅当时的单价',
+  `status` tinyint(4) NULL DEFAULT NULL COMMENT '0-正常，1-所有书已还',
   PRIMARY KEY (`borrow_id`, `seq`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_borrow_detail
 -- ----------------------------
-INSERT INTO `user_borrow_detail` VALUES (4, 1, 1, 1, 0, 12.34);
-INSERT INTO `user_borrow_detail` VALUES (4, 2, 2, 1, 0, 100.00);
-INSERT INTO `user_borrow_detail` VALUES (4, 3, 3, 1, 0, 100.01);
+INSERT INTO `user_borrow_detail` VALUES (4, 1, 1, 1, 1, 12.34, 1);
+INSERT INTO `user_borrow_detail` VALUES (4, 2, 2, 1, 1, 100.00, 1);
+INSERT INTO `user_borrow_detail` VALUES (4, 3, 3, 1, 1, 100.01, 1);
+INSERT INTO `user_borrow_detail` VALUES (5, 1, 1, 3, 3, 12.34, 1);
+INSERT INTO `user_borrow_detail` VALUES (5, 2, 2, 5, 5, 100.00, 1);
+INSERT INTO `user_borrow_detail` VALUES (5, 3, 3, 4, 4, 100.01, 1);
 
 -- ----------------------------
 -- Table structure for user_borrow_summary
@@ -108,11 +112,12 @@ CREATE TABLE `user_borrow_summary`  (
   `user_id` int(11) NULL DEFAULT NULL COMMENT '用户id',
   `status` tinyint(1) NULL DEFAULT NULL COMMENT '0-正常，1-所有书已还',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_borrow_summary
 -- ----------------------------
-INSERT INTO `user_borrow_summary` VALUES (4, 1, 0);
+INSERT INTO `user_borrow_summary` VALUES (4, 1, 1);
+INSERT INTO `user_borrow_summary` VALUES (5, 1, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

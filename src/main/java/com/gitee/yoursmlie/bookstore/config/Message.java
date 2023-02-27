@@ -33,4 +33,8 @@ public class Message {
 
     public static final String ERROR_00014 = "借阅id无效";
 
+    public static final String ERROR_00015 = "未借阅此图书";
+
+    public static final String ERROR_00016 = "还书数量错误";
+
 }
